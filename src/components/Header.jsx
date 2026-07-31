@@ -1,0 +1,5 @@
+import Breadcrumbs from './Breadcrumbs';
+
+export default function Header({ currentUser, handleLogout, title, subtitle, breadcrumbs = ['Dashboard'] }) {
+  return <header className="flex flex-col justify-between gap-5 border-b border-slate-200 pb-6 xl:flex-row xl:items-center"><div><Breadcrumbs items={breadcrumbs} /><p className="text-xs font-bold tracking-[0.18em] text-cyan-700">OPERAÇÕES / {title.toUpperCase()}</p><h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">{title}</h1><p className="mt-2 text-slate-500">{subtitle}</p></div><div className="flex items-center gap-3"><div className="hidden rounded-xl border border-slate-200 bg-white px-4 py-2.5 shadow-sm sm:block"><p className="text-xs text-slate-500">Usuário conectado</p><p className="text-sm font-semibold text-slate-800">{currentUser?.name}</p></div><button title="Encerrar sessão" onClick={handleLogout} className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-100">Sair</button></div></header>;
+}
