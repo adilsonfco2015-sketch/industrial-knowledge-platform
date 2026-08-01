@@ -14,6 +14,7 @@ app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '1mb' }));
 app.get('/', (_req, res) => res.json({ status: 'online', message: 'API Industrial Knowledge funcionando' }));
+app.get('/api', (_req, res) => res.json({ status: 'online', message: 'API Industrial Knowledge funcionando' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/lessons', authenticateJWT, lessonsRoutes);
 app.use('/api/lessons', authenticateJWT, lessonFilesRouter);
