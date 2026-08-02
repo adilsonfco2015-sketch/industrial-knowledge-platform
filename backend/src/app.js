@@ -20,6 +20,11 @@ app.use('/api/lessons', authenticateJWT, lessonsRoutes);
 app.use('/api/lessons', authenticateJWT, lessonFilesRouter);
 app.use('/api/files', filesRouter);
 app.use('/api/users', usersRoutes);
-app.use((error, _req, res, _next) => { if (error.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ message: 'O arquivo excede o limite de 20 MB.' }); console.error(error); return res.status(500).json({ message: 'Erro interno do servidor.' }); });
+app.use((error, _req, res, _next) => {
+  if (error.code === 'LIMIT_FILE_SIZE') return res.status(400).json({ message: 'O arquivo excede o limite de 20 MB.' });
+  if (error.code === 'LIMIT_UNEXPECTED_FILE') return res.status(400).json({ message: error.message || 'Formato não permitido. Envie JPG, PNG, WEBP, PDF, DOCX ou XLSX.' });
+  console.error(error);
+  return res.status(500).json({ message: 'Não foi possível concluir a operação com o anexo. Tente novamente.' });
+});
 
 export default app;

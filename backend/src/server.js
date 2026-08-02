@@ -11,8 +11,15 @@ async function bootstrap() {
     await bootstrapUsers();
     await bootstrapFiles();
     if (storageEnabled) {
-      const { error } = await supabase.storage.createBucket(evidenceBucket, { public: true });
-      if (error && !error.message.toLowerCase().includes('already exists')) throw error;
+      const { data: bucket, error: bucketError } = await supabase.storage.getBucket(evidenceBucket);
+      if (bucketError && !bucketError.message.toLowerCase().includes('not found')) throw bucketError;
+      if (!bucket) {
+        const { error } = await supabase.storage.createBucket(evidenceBucket, { public: false });
+        if (error) throw error;
+      } else if (bucket.public) {
+        const { error } = await supabase.storage.updateBucket(evidenceBucket, { public: false });
+        if (error) throw error;
+      }
     }
     console.log('Inicialização de dados concluída.');
   } catch (error) {
